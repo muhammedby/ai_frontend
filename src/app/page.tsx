@@ -383,7 +383,7 @@ export default function Home() {
               </svg>
               <div>
                 <h1 className="text-2xl font-bold text-[#4C8636]">AI Sohbet Botu</h1>
-                <p className="text-sm mt-1 text-[#a3a3a3]">Gemini AI ile güçlendirilmiş deneyim</p>
+                <p className="text-sm mt-1 text-[#a3a3a3]">Güçlü AI Modelleri</p>
               </div>
             </div>
           </div>
