@@ -105,18 +105,6 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
-    // Tarayıcının dikey sekmelerinin genişliğini hesapla
-    const calculateOffset = () => {
-      // window.outerWidth: Tarayıcı penceresinin toplam genişliği (dikey sekmeler dahil)
-      // window.innerWidth: İçerik alanının genişliği
-      // Fark, dikey sekmelerin ve diğer tarayıcı UI elementlerinin genişliğini verir
-      const verticalTabWidth = window.outerWidth - window.innerWidth;
-      setBrowserOffset(verticalTabWidth);
-    };
-
-    calculateOffset();
-    window.addEventListener('resize', calculateOffset);
-    return () => window.removeEventListener('resize', calculateOffset);
   }, []);
 
   const createNewChat = () => {
@@ -237,9 +225,9 @@ export default function Home() {
           return chat;
         }));
       }
-    } catch (error: Error) {
+    } catch (error: unknown) {
       // AbortError'u kontrol et
-      if (error.name === 'AbortError') {
+      if (error instanceof Error && error.name === 'AbortError') {
         console.log('İstek iptal edildi');
         return;
       }
