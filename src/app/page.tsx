@@ -64,10 +64,7 @@ export default function Home() {
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState(true);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [isInputVisible, setIsInputVisible] = useState(false);
-  const [browserOffset, setBrowserOffset] = useState(0);
   const [isAgentMode, setIsAgentMode] = useState(false);
   const [isAkilliAnaliz, setIsAkilliAnaliz] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -240,7 +237,7 @@ export default function Home() {
           return chat;
         }));
       }
-    } catch (error: any) {
+    } catch (error: Error) {
       // AbortError'u kontrol et
       if (error.name === 'AbortError') {
         console.log('İstek iptal edildi');
@@ -271,7 +268,6 @@ export default function Home() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setSelectedFile(file);
     setIsUploading(true);
 
     const formData = new FormData();
@@ -285,8 +281,6 @@ export default function Home() {
 
       if (!response.ok) throw new Error('Yükleme başarısız');
 
-      const data = await response.json();
-      
       // Eğer aktif bir sohbet yoksa yeni bir sohbet oluştur
       if (!activeChatId) {
         const newChat: ChatSession = {
@@ -325,7 +319,7 @@ export default function Home() {
           hasContext: false
         }]);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Upload error:', error);
       setChatHistory(prev => [...prev, {
         role: 'assistant',
@@ -334,7 +328,6 @@ export default function Home() {
       }]);
     } finally {
       setIsUploading(false);
-      setSelectedFile(null);
     }
   };
 
